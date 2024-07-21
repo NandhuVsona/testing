@@ -33,22 +33,26 @@
       width: 100%;
       height: 100vh;
       position: relative;
-      transition: all .5s ease;
+      transition: all 0.5s ease;
+      overflow: hidden;
+      overflow-y: scroll;
     }
-    .mode .hide{
+    .mode .hide {
       display: none;
     }
-    .container.dark header .options .mode .fa-cloud-sun{
+    .container.dark header .options .mode .fa-cloud-sun {
       display: none;
     }
-    .container.dark header .options .mode .fa-cloud-moon{
+    .container.dark header .options .mode .fa-cloud-moon {
       display: flex;
     }
-    .container.dark{
+    .container.dark {
       background-color: #282828;
       color: #ffffff;
     }
     header {
+      position: sticky;
+      top: 0;
       background-color: var(--bg);
       display: flex;
       justify-content: space-between;
@@ -64,8 +68,8 @@
       justify-content: space-evenly;
     }
     .add {
-      position: absolute;
-      bottom: 20px;
+      position: fixed;
+      bottom: 35px;
       right: 20px;
       width: 50px;
       height: 50px;
@@ -89,7 +93,6 @@
       height: 50px;
       font-size: 17px;
       align-items: center;
-      
     }
     ul li.task input[type="checkbox"] {
       width: 20px;
@@ -102,13 +105,13 @@
       align-items: center;
       gap: 20px;
     }
-    .task.completed .todo-operations{
+    .task.completed .todo-operations {
       display: none;
     }
-    .task.completed .delete{
+    .task.completed .delete {
       display: flex;
     }
-    .delete{
+    .delete {
       display: none;
     }
     .todo-box,
@@ -220,8 +223,14 @@
     .input-box-header small {
       text-wrap: nowrap;
     }
-   
-    
+    .container.dark .todo-box,
+    .container.dark .edit-box {
+      background-color: #000000;
+    }
+    .container.dark .todo-box .input-box-header h3,
+    .container.dark .edit-box .edit-box-header {
+      color: #000000;
+    }
   </style>
   <body>
     <div class="container">
@@ -338,6 +347,68 @@
             </li>
           </ul>
         </section>
+        <section>
+          <div class="day-3">Tue 11 Jun 2024</div>
+          <ul>
+            <li class="task">
+              <section>
+                <input type="checkbox" />
+                <p>Drink water and Juice</p>
+              </section>
+              <div class="todo-operations">
+                <i class="fa-solid fa-pen-to-square edit-task"></i>
+                <i class="fa-regular fa-star unstar"></i>
+              </div>
+              <div class="delete">
+                <i class="fa-regular fa-trash-can"></i>
+              </div>
+            </li>
+            <li class="task completed">
+              <section>
+                <input type="checkbox" />
+                <p>Learn javascript in 1 hour</p>
+              </section>
+              <div class="todo-operations">
+                <i class="fa-solid fa-pen-to-square edit-task"></i>
+                <i class="fa-regular fa-star unstar"></i>
+              </div>
+              <div class="delete">
+                <i class="fa-regular fa-trash-can"></i>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section>
+          <div class="day-3">Tue 11 Jun 2024</div>
+          <ul>
+            <li class="task">
+              <section>
+                <input type="checkbox" />
+                <p>Drink water and Juice</p>
+              </section>
+              <div class="todo-operations">
+                <i class="fa-solid fa-pen-to-square edit-task"></i>
+                <i class="fa-regular fa-star unstar"></i>
+              </div>
+              <div class="delete">
+                <i class="fa-regular fa-trash-can"></i>
+              </div>
+            </li>
+            <li class="task completed">
+              <section>
+                <input type="checkbox" />
+                <p>Learn javascript in 1 hour</p>
+              </section>
+              <div class="todo-operations">
+                <i class="fa-solid fa-pen-to-square edit-task"></i>
+                <i class="fa-regular fa-star unstar"></i>
+              </div>
+              <div class="delete">
+                <i class="fa-regular fa-trash-can"></i>
+              </div>
+            </li>
+          </ul>
+        </section>
       </div>
 
       <!-- todo adding input box -->
@@ -369,7 +440,7 @@
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        const mode = document.querySelector(".mode")
+        const mode = document.querySelector(".mode");
         const addTodo = document.querySelector(".add");
         const saveBtn = document.querySelector(".save");
         const editBtn = document.querySelectorAll(".edit-task");
@@ -377,26 +448,26 @@
         const unstar = document.querySelectorAll(".unstar");
         const deleteBtn = document.querySelectorAll(".delete");
 
-        const theme = JSON.parse(localStorage.getItem('theme'))
-        if(theme == 'dark'){
-          document.querySelector(".container").classList.add("dark")
-        }
-        else{
-          document.querySelector(".container").classList.remove("dark")
+        const theme = JSON.parse(localStorage.getItem("theme"));
+        if (theme == "dark") {
+          document.querySelector(".container").classList.add("dark");
+        } else {
+          document.querySelector(".container").classList.remove("dark");
         }
 
-        mode.addEventListener("click",()=>{
-          let theme = document.querySelector(".container").classList.toggle("dark")
-          if(document.querySelector(".container").classList.contains('dark')){
-            localStorage.setItem('theme',JSON.stringify('dark'))
+        mode.addEventListener("click", () => {
+          let theme = document
+            .querySelector(".container")
+            .classList.toggle("dark");
+          if (document.querySelector(".container").classList.contains("dark")) {
+            localStorage.setItem("theme", JSON.stringify("dark"));
+          } else {
+            localStorage.setItem("theme", JSON.stringify("white"));
           }
-          else{
-            localStorage.setItem('theme',JSON.stringify('white'))
-          }
-        })
+        });
         deleteBtn.forEach((btn) => {
-          btn.addEventListener("click", () =>{
-            btn.parentElement.remove()
+          btn.addEventListener("click", () => {
+            btn.parentElement.remove();
           });
         });
         unstar.forEach((unstar) => {
@@ -406,7 +477,7 @@
           if (unstar.classList.contains("fa-regular")) {
             unstar.classList.remove("fa-regular");
             unstar.classList.add("fa-solid");
-          }else{
+          } else {
             unstar.classList.add("fa-regular");
             unstar.classList.remove("fa-solid");
           }
@@ -420,10 +491,10 @@
           if (box.checked) {
             box.setAttribute("checked", "checked");
             box.nextElementSibling.style.textDecoration = "line-through";
-            box.parentElement.parentElement.classList.add('completed')
+            box.parentElement.parentElement.classList.add("completed");
           } else {
             box.setAttribute("checked", "unchecked");
-           box.parentElement.parentElement.classList.remove('completed')
+            box.parentElement.parentElement.classList.remove("completed");
             box.nextElementSibling.style.textDecoration = "none";
           }
         }
@@ -439,7 +510,9 @@
             task.parentElement.previousElementSibling.children[1].textContent;
           document.querySelector(".edit-box").classList.toggle("active");
           inputBox.value = textData;
-          inputBox.focus();
+          setTimeout(() => {
+            inputBox.focus();
+          }, 800);
         }
 
         addTodo.addEventListener("click", openInputBox);
@@ -447,14 +520,16 @@
 
         function openInputBox() {
           document.querySelector(".todo-box").classList.toggle("active");
-          document.querySelector(".input-box input").focus();
+          setTimeout(() => {
+            document.querySelector(".input-box input").focus();
+          }, 800);
         }
         function closeInputBox() {
           document.querySelector(".todo-box").classList.toggle("active");
         }
         function getData() {
           let data = document.querySelector("#data").value;
-          if(data.length ==0 || data == ' '){
+          if (data.length == 0 || data == " ") {
             closeInputBox();
             return;
           }
@@ -472,7 +547,7 @@
                 <i class="fa-regular fa-trash-can"></i>
               </div>
             </li>
-          `
+          `;
           document.querySelector(".day-1+ul").innerHTML += template;
           document.querySelector(".input-box input").value = "";
           closeInputBox();
