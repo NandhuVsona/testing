@@ -57,7 +57,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-
+      position: relative;
       padding: 5px 10px;
       color: var(--text-color);
     }
@@ -66,6 +66,49 @@
       align-items: center;
       min-width: 200px;
       justify-content: space-evenly;
+    }
+    .search {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .search-box {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      outline: none;
+      border: none;
+      display: none;
+      justify-content: flex-start;
+      align-items: center;
+      background-color: #ffffff;
+      animation: open 0.3s ease;
+      transform-origin: center;
+    }
+    .fa-circle-xmark {
+      position: absolute;
+      right: 20px;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+    }
+    .search-box input {
+      flex-grow: 1;
+      font-size: inherit;
+      height: 47px;
+      padding-left: 10px;
+      border: none;
+      border-bottom: 1px solid;
+    }
+    .search-box input:focus {
+      outline: none;
+      border: none;
+      border-bottom: 1px solid;
+    }
+    header.searchbar-active .options .search-box {
+      display: flex;
     }
     .add {
       position: fixed;
@@ -138,7 +181,7 @@
     .edit-box.active {
       display: flex;
       transition: all 0.3s ease;
-      width: 300px;
+      width: 350px;
       animation: open 0.5s ease;
       transform-origin: center;
     }
@@ -238,6 +281,15 @@
         <h2>Task</h2>
         <div class="options">
           <div class="search">
+            <div class="search-box">
+              <input
+                id="search-input-box"
+                autofocus
+                type="text"
+                placeholder="Search your todos"
+              />
+              <i class="fa-solid fa-circle-xmark"></i>
+            </div>
             <i class="fa-solid fa-magnifying-glass"></i>
           </div>
           <div class="stared">
@@ -447,6 +499,17 @@
         const checkbox = document.querySelectorAll(".task section input");
         const unstar = document.querySelectorAll(".unstar");
         const deleteBtn = document.querySelectorAll(".delete");
+        const searcIcon = document.querySelector(".fa-magnifying-glass");
+        const searchClose = document.querySelector(".fa-circle-xmark");
+        const searchInputBox = document.querySelector("#search-input-box");
+
+        searchClose.addEventListener("click", () => {
+          document.querySelector("header").classList.toggle("searchbar-active");
+        });
+        searcIcon.addEventListener("click", () => {
+          document.querySelector("header").classList.toggle("searchbar-active");
+          searchInputBox.focus();
+        });
 
         const theme = JSON.parse(localStorage.getItem("theme"));
         if (theme == "dark") {
@@ -512,7 +575,7 @@
           inputBox.value = textData;
           setTimeout(() => {
             inputBox.focus();
-          }, 800);
+          }, 700);
         }
 
         addTodo.addEventListener("click", openInputBox);
@@ -522,7 +585,7 @@
           document.querySelector(".todo-box").classList.toggle("active");
           setTimeout(() => {
             document.querySelector(".input-box input").focus();
-          }, 800);
+          }, 700);
         }
         function closeInputBox() {
           document.querySelector(".todo-box").classList.toggle("active");
